@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -49,3 +50,51 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+# code for player movement
+
+# while direction != 'q':
+#     if direction == 'n':
+#         if player.current_room.name == 'Outside Cave Entrance':
+#             print(player.current_room.n_to.name)
+#     if direction == 'e':
+#             print('user cannot go to that direction')
+# else:
+#     print('okay')
+
+player = Player('kelechi', room['outside'])
+print(player)
+
+direction = input("kelechi start playing by choosing a direction:'n', 's', 'e', 'w' 'q' to quit: ")
+
+direction_action = ['n', 's', 'e', 'w']
+
+while not direction == 'q':
+
+    if direction == 'n' and player.current_room.n_to:
+        player.current_room = player.current_room.n_to
+        print(f"current room: {player.current_room}")
+
+    elif direction == 'e' and player.current_room.e_to:
+        player.current_room = player.current_room.e_to
+        print(f"current room: {player.current_room}")
+
+    elif direction == 'w' and player.current_room.w_to:
+        player.current_room = player.current_room.w_to
+        print(f"current room: {player.current_room}")
+
+    elif direction == 's' and player.current_room.s_to:
+        player.current_room = player.current_room.s_to
+        print(f"current room: {player.current_room}")
+
+    elif direction not in direction_action:
+        print('invalid input, please try again')
+
+    else:
+        print('user cannot go to that direction')
+
+    direction = input("kelechi start playing by choosing a direction:'n', 's', 'e', 'w' 'q' to quit: ")
+
+
+
+
