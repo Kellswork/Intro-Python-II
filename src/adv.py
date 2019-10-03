@@ -4,24 +4,23 @@ from player import Player
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+    'outside': Room("Outside Cave Entrance",
+                    "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
+    'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
+    'narrow': Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
-
 
 # Link rooms together
 
@@ -38,10 +37,12 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+
 # Make a new player object that is currently in the 'outside' room.
+player = Player('kelechi', room['outside'])
+
 
 # Write a loop that:
-#
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
@@ -50,51 +51,29 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-
 # code for player movement
 
-# while direction != 'q':
-#     if direction == 'n':
-#         if player.current_room.name == 'Outside Cave Entrance':
-#             print(player.current_room.n_to.name)
-#     if direction == 'e':
-#             print('user cannot go to that direction')
-# else:
-#     print('okay')
+def move_player(move, current_room):
+    attrib = move + '_to'
+    if hasattr(current_room, attrib):
+        return getattr(current_room, attrib)
 
-player = Player('kelechi', room['outside'])
-print(player)
+    print('you cannot go that direction')
 
-direction = input("kelechi start playing by choosing a direction:'n', 's', 'e', 'w' 'q' to quit: ")
+    return current_room
 
-direction_action = ['n', 's', 'e', 'w']
 
-while not direction == 'q':
+done = False
 
-    if direction == 'n' and player.current_room.n_to:
-        player.current_room = player.current_room.n_to
-        print(f"current room: {player.current_room}")
+while not done:
+    print(player.current_room)
+    direction = input("choose a direction:'n', 's', 'e', 'w' 'q' to quit: ")
+    if direction == 'q':
+        print('Later')
+        done = True
 
-    elif direction == 'e' and player.current_room.e_to:
-        player.current_room = player.current_room.e_to
-        print(f"current room: {player.current_room}")
-
-    elif direction == 'w' and player.current_room.w_to:
-        player.current_room = player.current_room.w_to
-        print(f"current room: {player.current_room}")
-
-    elif direction == 's' and player.current_room.s_to:
-        player.current_room = player.current_room.s_to
-        print(f"current room: {player.current_room}")
-
-    elif direction not in direction_action:
-        print('invalid input, please try again')
+    elif direction in ['n', 's', 'e', 'w']:
+        player.current_room = move_player(direction, player.current_room)
 
     else:
-        print('user cannot go to that direction')
-
-    direction = input("kelechi start playing by choosing a direction:'n', 's', 'e', 'w' 'q' to quit: ")
-
-
-
-
+        print('invalid input, please try again')
