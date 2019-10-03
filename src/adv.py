@@ -1,7 +1,9 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
+from src.item import Item
 
 room = {
     'outside': Room("Outside Cave Entrance",
@@ -37,6 +39,25 @@ room['treasure'].s_to = room['narrow']
 # Main
 #
 
+# create a dictionary of items and append the key to some rooms
+
+item = {
+    'outside': [Item("bones", "the bones of those who have walked this path be with you"),
+                Item("stones", "cast your stones wisely, it might save you")],
+    'foyer': [Item("torch", "may the light guide your direction"),
+              Item("mask", "protection for the dusty path ahead")],
+    'overlook': [Item("rope", "climb down this slippy slope"),
+                 Item("axe", "chop doen a tree to build your bridge")],
+    'treasure': [Item("tears", "free your heart of the pain of your loss"),
+                 Item("sandals", "the journey out of here might be a long one")],
+}
+
+room['outside'].items = item['outside']
+room['foyer'].items = item['foyer']
+room['overlook'].items = item['overlook']
+room['treasure'].items = item['treasure']
+
+# when user wants to see their inventory, write if statement to check if it is empty or not
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player('kelechi', room['outside'])
@@ -67,7 +88,7 @@ done = False
 
 while not done:
     print(player.current_room)
-    direction = input("choose a direction:'n', 's', 'e', 'w' 'q' to quit: ")
+    direction = input("choose a direction:'n', 's', 'e', 'w' 'q' to quit: ").lower().strip().split()
     if direction == 'q':
         print('Later')
         done = True
@@ -75,5 +96,10 @@ while not done:
     elif direction in ['n', 's', 'e', 'w']:
         player.current_room = move_player(direction, player.current_room)
 
+    elif direction[0] == 'get' or 'take':
+        print(player.current_room.on_take(direction[1]))
+
     else:
         print('invalid input, please try again')
+# add item list to the Room class
+# add a loop that will display all the items in each room
